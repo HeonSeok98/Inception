@@ -1,12 +1,12 @@
 
 FROM debian:bullseye
 
-RUN apt-get update && \
+RUN apt-get -y update && \
     apt-get install -y nginx && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
