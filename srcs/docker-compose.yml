@@ -5,4 +5,35 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     ports:
-      - 8000:80
+      - 443:443
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb
+    environment:
+      - .env
+    networks:
+      - inception
+    restart: always
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    environment:
+      - .env
+    networks:
+      - inception
+    restart: always
+
+networks:
+  inception:
+    driver: bridge
+  
+volumes:
