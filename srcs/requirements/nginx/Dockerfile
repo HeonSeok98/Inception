@@ -1,10 +1,10 @@
 
-FROM debian:bullseye
+FROM debian:buster
 
-RUN apt-get -y update && \
-    apt-get install -y nginx && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update -y
+RUN apt-get install nginx -y
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
