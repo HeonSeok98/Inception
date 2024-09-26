@@ -12,8 +12,8 @@ RUN		mkdir /etc/nginx/ssl
 
 RUN		openssl req -newkey rsa:4096 -days 365 -nodes -x509 \
 		-subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=Gun/CN=localhost" \
-		-out /etc/nginx/ssl/seuan.42.fr.crt \
-		-keyout /etc/nginx/ssl/seuan.42.fr.key
+		-out /etc/nginx/ssl/heolee.42.fr.crt \
+		-keyout /etc/nginx/ssl/heolee.42.fr.key
 
 COPY	conf/nginx.conf /etc/nginx/conf.d/default.conf
 

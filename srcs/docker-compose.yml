@@ -1,42 +1,37 @@
-version: "3.0"
+version: "3.8"
 
 services:
   nginx:
     build: ./requirements/nginx/
     container_name: nginx
-    image: nginx
     restart: always
     volumes:
       - wp_volume:/var/www/html/wordpress
     depends_on:
       - wordpress
     ports:
-      - "443:443"
+      - 443:443
     env_file:
       - .env
     networks:
       - inception_network
-    tty: true
 
   mariadb:
     build: ./requirements/mariadb/
     container_name: mariadb
-    image: mariadb
     restart: always
     expose:
       - "3306"
     volumes:
-      - db_volume:/var/lib/mysql/ #[호스트 디렉토리 경로]:[컨테이너 디렉토리 경로]
+      - db_volume:/var/lib/mysql/
     env_file:
       - .env
     networks:
       - inception_network
-    tty: true
 
   wordpress:
     build: ./requirements/wordpress/
     container_name: wordpress
-    image: wordpress
     restart: always
     depends_on:
       - mariadb
@@ -54,14 +49,14 @@ volumes:
     driver: local
     driver_opts:
       type: volume
-      device: /Users/heolee/tmp/mariadb
+      device: /Users/heolee/Desktop/tmp/mariadb
       o: bind
 
   wp_volume:
     driver: local
     driver_opts:
       type: volume
-      device: /Users/heolee/tmp/wordpress
+      device: /Users/heolee/Desktop/tmp/wordpress
       o: bind
 
 networks:
