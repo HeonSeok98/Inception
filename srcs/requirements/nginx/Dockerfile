@@ -1,13 +1,22 @@
 
-FROM debian:buster
+FROM	debian:buster
 
-RUN apt-get update -y
-RUN apt-get install nginx -y
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN		apt-get update -y && \
+		apt-get upgrade -y && \
+		apt-get -y install \
+		nginx \
+		openssl \
+		vim
 
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+RUN		mkdir /etc/nginx/ssl
 
-EXPOSE 443
+RUN		openssl req -newkey rsa:4096 -days 365 -nodes -x509 \
+		-subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=Gun/CN=localhost" \
+		-out /etc/nginx/ssl/seuan.42.fr.crt \
+		-keyout /etc/nginx/ssl/seuan.42.fr.key
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY	conf/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE	443
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

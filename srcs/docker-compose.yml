@@ -1,60 +1,70 @@
-version: '3.8'
+version: "3.0"
 
 services:
   nginx:
+    build: ./requirements/nginx/
     container_name: nginx
-    build: ./requirements/nginx
-    ports:
-      - 443:443
+    image: nginx
+    restart: always
+    volumes:
+      - wp_volume:/var/www/html/wordpress
     depends_on:
       - wordpress
-    volumes:
-     - wordpress:/var/www/html
+    ports:
+      - "443:443"
+    env_file:
+      - .env
     networks:
-      - inception
+      - inception_network
+    tty: true
+
+  mariadb:
+    build: ./requirements/mariadb/
+    container_name: mariadb
+    image: mariadb
     restart: always
+    expose:
+      - "3306"
+    volumes:
+      - db_volume:/var/lib/mysql/ #[호스트 디렉토리 경로]:[컨테이너 디렉토리 경로]
+    env_file:
+      - .env
+    networks:
+      - inception_network
+    tty: true
 
   wordpress:
+    build: ./requirements/wordpress/
     container_name: wordpress
-    build: ./requirements/wordpress
-    volumes:
-      - wordpress:/var/www/html
+    image: wordpress
+    restart: always
     depends_on:
       - mariadb
-    env_file:
-      - .env
-    networks:
-      - inception
-    restart: always
-
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb
+    expose:
+      - "9000"
     volumes:
-      - mariadb:/var/lib/mysql
+      - wp_volume:/var/www/html/wordpress
     env_file:
       - .env
     networks:
-      - inception
-    restart: always
+      - inception_network
+
+volumes:
+  db_volume:
+    driver: local
+    driver_opts:
+      type: volume
+      device: /Users/heolee/tmp/mariadb
+      o: bind
+
+  wp_volume:
+    driver: local
+    driver_opts:
+      type: volume
+      device: /Users/heolee/tmp/wordpress
+      o: bind
 
 networks:
-  inception:
+  inception_network:
     driver: bridge
-  
-volumes:
-  wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      device: /Users/heolee/Desktop/tmp/wordpress
-      o: bind
-      type: none
-  mariadb:
-    name: mariadb
-    driver: local
-    driver_opts:
-      device: /Users/heolee/Desktop/tmp/mariadb
-      o: bind
-      type: none
 
