@@ -16,6 +16,7 @@ clean:
 	docker rmi -f $$(docker images -qa)
 	docker volume rm $$(docker volume ls -q)
 
-# docker system prune -a
+# fclean:
+#   docker system prune -af
 
 .PHONY: all re down clean

@@ -49,14 +49,14 @@ volumes:
     driver: local
     driver_opts:
       type: volume
-      device: /Users/heolee/Desktop/tmp/mariadb
+      device: /Users/heonseok-lee/Desktop/Inception/tmp/mariadb
       o: bind
 
   wp_volume:
     driver: local
     driver_opts:
       type: volume
-      device: /Users/heolee/Desktop/tmp/wordpress
+      device: /Users/heonseok-lee/Desktop/Inception/tmp/wordpress
       o: bind
 
 networks:
