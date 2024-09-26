@@ -5,7 +5,7 @@ services:
     container_name: nginx
     build: ./requirements/nginx/
     volumes:
-      - wordpress:/var/www/html/wordpress
+      - wp_volume:/var/www/html/wordpress
     depends_on:
       - wordpress
     ports:
@@ -22,7 +22,7 @@ services:
     expose:
       - "3306"
     volumes:
-      - mariadb:/var/lib/mysql/
+      - db_volume:/var/lib/mysql/
     env_file:
       - .env
     networks:
@@ -37,7 +37,7 @@ services:
     expose:
       - "9000"
     volumes:
-      - wordpress:/var/www/html/wordpress
+      - wp_volume:/var/www/html/wordpress
     env_file:
       - .env
     networks:
@@ -45,14 +45,14 @@ services:
     restart: always
 
 volumes:
-  mariadb:
+  db_volume:
     driver: local
     driver_opts:
       type: volume
       device: /Users/heolee/Desktop/tmp/mariadb
       o: bind
 
-  wordpress:
+  wp_volume:
     driver: local
     driver_opts:
       type: volume
